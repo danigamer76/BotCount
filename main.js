@@ -6,6 +6,9 @@ const credentials = require('./credentials.json'); // Importa las credenciales n
 const keep_alive = require('./keep_alive.js');
 const idCanalTexto = '1238411272614318091';
 const idGoogleSheet = '1oF3C-HaQdRqfWEk5yg63F-BfYYQMME1eanIdN_pz1J0';
+const fs = require('fs');
+
+const TIME_FILE = 'timeRemaining.json';
 
 let reinicios = 0;
 
@@ -57,11 +60,10 @@ let userActions = {};
 // Evento "ready" para el cliente
 client.on('ready', async () => {
     console.log('¡Estoy listo!'); // Imprime un mensaje en la consola cuando el bot está listo
-    //mostrarTiempoRestante();
     limpiarChat();
-    mostrarBarraProgreso();
-    
-    
+    generarRanking();
+    mostrarTiempoRestante();
+    //mostrarBarraProgreso();
 });
 
 async function actualizarRanking() {
@@ -113,15 +115,18 @@ async function limpiarChat() {
 async function mostrarTiempoRestante() {
     const channel = client.channels.cache.get(idCanalTexto); // Reemplaza "ID_DEL_CANAL" con el ID del canal donde deseas mostrar el tiempo restante
     if (channel) {
-        let tiempoRestante = 129600; // Tiempo restante en segundos (1 minuto = 60 segundos)
-        const mensajeTiempo = await channel.send(`:trophy: **Top 3 del ranking** :trophy: Tiempo restante para la próxima actualización: ${formatTiempo(tiempoRestante)}`);
+        let tiempoRestante = leerTiempoRestante(); // Leer el tiempo restante del archivo
+        const mensajeTiempo = await channel.send(`:trophy: **Top 3 del ranking** :trophy: Tiempo restante para la próxima actualización: ${convertirTiempo(tiempoRestante)}`);
 
         const intervalo = setInterval(() => {
             tiempoRestante--;
+            escribirTiempoRestante(tiempoRestante); // Guardar el tiempo restante en el archivo
+
             if (tiempoRestante > 0) {
-                mensajeTiempo.edit(`:trophy: **Top 3 del ranking** :trophy: Tiempo restante para la próxima actualización: ${formatTiempo(tiempoRestante)}`);
+                mensajeTiempo.edit(`:trophy: **Top 3 del ranking** :trophy: Tiempo restante para la próxima actualización: ${convertirTiempo(tiempoRestante)}`);
             } else {
                 clearInterval(intervalo);
+                escribirTiempoRestante(129600); // Reiniciar el tiempo restante a 1.5 días (en segundos)
                 mostrarBarraProgreso(); // Llamar a la función para mostrar la barra de progreso
             }
         }, 1000); // Intervalo de actualización: cada segundo
@@ -130,12 +135,16 @@ async function mostrarTiempoRestante() {
     }
 }
 
-function formatTiempo(tiempoRestante) {
-    const dias = Math.floor(tiempoRestante / (60 * 60 * 24));
-    const horas = Math.floor((tiempoRestante % (60 * 60 * 24)) / (60 * 60));
-    const minutos = Math.floor((tiempoRestante % (60 * 60)) / 60);
-    const segundos = tiempoRestante % 60;
-    return `${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos`;
+// Función para convertir el tiempo restante en días, horas, minutos y segundos
+function convertirTiempo(segundos) {
+    const dias = Math.floor(segundos / (24 * 60 * 60));
+    segundos %= 24 * 60 * 60;
+    const horas = Math.floor(segundos / (60 * 60));
+    segundos %= 60 * 60;
+    const minutos = Math.floor(segundos / 60);
+    segundos %= 60;
+
+    return `${dias}d ${horas}h ${minutos}m ${segundos}s`;
 }
 
 // Genera un Ranking
@@ -393,4 +402,22 @@ async function mostrarBarraProgreso() {
 // Función para esperar un cierto tiempo (simula una operación asíncrona)
 function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Inicializar el archivo con el tiempo restante inicial si no existe
+if (!fs.existsSync(TIME_FILE)) {
+    fs.writeFileSync(TIME_FILE, JSON.stringify({ tiempoRestante: 129600 })); // Inicializa con 1.5 días (en segundos)
+}
+
+// Función para leer el tiempo restante del archivo
+function leerTiempoRestante() {
+    const data = fs.readFileSync(TIME_FILE);
+    const json = JSON.parse(data);
+    return json.tiempoRestante;
+}
+
+// Función para escribir el tiempo restante en el archivo
+function escribirTiempoRestante(tiempoRestante) {
+    const json = { tiempoRestante };
+    fs.writeFileSync(TIME_FILE, JSON.stringify(json));
 }
