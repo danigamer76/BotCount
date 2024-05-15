@@ -3,6 +3,7 @@
 const Discord = require('discord.js');
 const { google } = require('googleapis'); // Importa googleapis desde la biblioteca Google APIs
 const credentials = require('./credentials.json'); // Importa las credenciales necesarias para la autenticación con Google Sheets
+const keep_alive = require('./keep_alive.js');
 const idCanalTexto = '1238411272614318091';
 const idGoogleSheet = '1oF3C-HaQdRqfWEk5yg63F-BfYYQMME1eanIdN_pz1J0';
 
