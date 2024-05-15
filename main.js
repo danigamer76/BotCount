@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 const { google } = require('googleapis'); // Importa googleapis desde la biblioteca Google APIs
 const credentials = require('./credentials.json'); // Importa las credenciales necesarias para la autenticación con Google Sheets
 const idCanalTexto = '1238411272614318091';
-const idDiscord = 'MTIzNzcwNDI3ODc4NTc4NTg2Ng.G7nvFC.Uhke3R1oQMsWAGbJe2JWt-0gm5OJ7xN1Cy6JAk';
 const idGoogleSheet = '1oF3C-HaQdRqfWEk5yg63F-BfYYQMME1eanIdN_pz1J0';
 
 let reinicios = 0;
@@ -252,7 +251,7 @@ async function generarRanking() {
 
 
 // Inicia sesión en Discord
-client.login(idDiscord);
+client.login(process.env.TOKEN); // login bot using token
 
 // Función para crear la hoja de cálculo del usuario si no existe
 async function crearHoja(username) {
