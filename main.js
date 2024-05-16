@@ -61,7 +61,7 @@ let userActions = {};
 client.on('ready', async () => {
     console.log('¡Estoy listo!'); // Imprime un mensaje en la consola cuando el bot está listo
     limpiarChat();
-    generarRanking();
+    presentarse();
     mostrarTiempoRestante();
     //mostrarBarraProgreso();
 });
@@ -377,7 +377,7 @@ async function mostrarBarraProgreso() {
         await progressMessage.edit(`:hourglass_flowing_sand: Datos Actualizados`);
 
         await actualizarRanking(); // Actualizar el ranking después de la barra de progreso
-        //await mostrarTiempoRestante(); // Reiniciar el ciclo
+        await mostrarTiempoRestante(); // Reiniciar el ciclo
 
         await wait(10000);
 
