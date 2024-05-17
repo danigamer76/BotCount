@@ -225,7 +225,7 @@ async function generarRanking() {
         const { totalAbusos, idSums } = userData;
 
         // Crear la tabla para el usuario
-        message += '\`\`\`\n\n"
+       message += `\`\`\`
 |  ${index + 1}. ${username}: Total Abusos: ${totalAbusos}  |
 |-----------------------------------------------------------|
 `;
