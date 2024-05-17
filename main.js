@@ -60,10 +60,10 @@ let userActions = {};
 // Evento "ready" para el cliente
 client.on('ready', async () => {
     console.log('¡Estoy listo!'); // Imprime un mensaje en la consola cuando el bot está listo
+
+    
     limpiarChat();
-    presentarse();
-    mostrarTiempoRestante();
-    //mostrarBarraProgreso();
+    mostrarBarraProgreso()
 });
 
 async function actualizarRanking() {
@@ -227,7 +227,7 @@ async function generarRanking() {
         const { totalAbusos, idSums } = userData;
 
         // Crear la tabla para el usuario
-        message += `\`\`\`
+        message += `:trophy: **Top 3 del ranking** :trophy: \n \n`;
 |  ${index + 1}. ${username}: Total Abusos: ${totalAbusos}  |
 |-----------------------------------------------------------|
 `;
@@ -377,7 +377,7 @@ async function mostrarBarraProgreso() {
         await progressMessage.edit(`:hourglass_flowing_sand: Datos Actualizados`);
 
         await actualizarRanking(); // Actualizar el ranking después de la barra de progreso
-        await mostrarTiempoRestante(); // Reiniciar el ciclo
+        //await mostrarTiempoRestante(); // Reiniciar el ciclo
 
         await wait(10000);
 
