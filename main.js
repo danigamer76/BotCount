@@ -227,7 +227,7 @@ async function generarRanking() {
         const { totalAbusos, idSums } = userData;
 
         // Crear la tabla para el usuario
-        message += `:trophy: **Top 3 del ranking** :trophy: \n \n`;
+        message += `:trophy: **Top 3 del ranking** :trophy \n\n\n
 |  ${index + 1}. ${username}: Total Abusos: ${totalAbusos}  |
 |-----------------------------------------------------------|
 `;
