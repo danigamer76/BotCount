@@ -60,14 +60,12 @@ let userActions = {};
 // Evento "ready" para el cliente
 client.on('ready', async () => {
     console.log('¡Estoy listo!'); // Imprime un mensaje en la consola cuando el bot está listo
-
-    
     limpiarChat();
     mostrarBarraProgreso()
 });
 
 async function actualizarRanking() {
-    limpiarChat();
+    //limpiarChat();
     try {
         const guild = client.guilds.cache.first(); // Obtiene el primer servidor en el que está el bot
         if (!guild) return; // Si no se encuentra ningún servidor, salir de la función
