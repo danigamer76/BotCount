@@ -220,12 +220,12 @@ async function generarRanking() {
         .sort(([, userDataA], [, userDataB]) => userDataB.totalAbusos - userDataA.totalAbusos)
         .slice(0, 3); // Mostrar solo los primeros 3 puestos
 
-    let message = "";
+    let message = ":trophy: **Top 3 del ranking** :trophy \n\n";
     sortedRanking.forEach(([username, userData], index) => {
         const { totalAbusos, idSums } = userData;
 
         // Crear la tabla para el usuario
-        message += `:trophy: **Top 3 del ranking** :trophy \n\n\n
+        message += '\\\
 |  ${index + 1}. ${username}: Total Abusos: ${totalAbusos}  |
 |-----------------------------------------------------------|
 `;
