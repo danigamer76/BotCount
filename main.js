@@ -145,6 +145,27 @@ function convertirTiempo(segundos) {
     return `${dias}d ${horas}h ${minutos}m ${segundos}s`;
 }
 
+// Función para dividir el mensaje en partes más pequeñas
+function dividirMensaje(mensaje, longitudMaxima) {
+    const partes = [];
+    let parteActual = '';
+
+    for (const linea of mensaje.split('\n')) {
+        if (parteActual.length + linea.length + 1 <= longitudMaxima) {
+            parteActual += linea + '\n';
+        } else {
+            partes.push(parteActual);
+            parteActual = linea + '\n';
+        }
+    }
+
+    if (parteActual) {
+        partes.push(parteActual);
+    }
+
+    return partes;
+}
+
 // Genera un Ranking
 async function generarRanking() {
     const spreadsheetId = idGoogleSheet;
@@ -256,7 +277,13 @@ async function generarRanking() {
             message += `**${index + 11}. ${username}:** | -> Total Abusos: ${totalAbusos}\n`;
         });
 
-    return message;
+    // Dividir el mensaje en partes más pequeñas si es necesario
+    const partesMensaje = dividirMensaje(message, 2000);
+
+    // Enviar cada parte del mensaje al canal
+    for (const parte of partesMensaje) {
+        await channel.send(parte);
+    }
 }
 
 
@@ -387,10 +414,6 @@ async function mostrarBarraProgreso() {
         } catch (deleteError) {
             console.error('Error al eliminar el mensaje de progreso:', deleteError.message);
         }
-
-
-        
-
     } catch (error) {
         console.error('Error al mostrar la barra de progreso:', error);
     }
