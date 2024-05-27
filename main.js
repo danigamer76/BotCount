@@ -114,14 +114,14 @@ async function mostrarTiempoRestante() {
     const channel = client.channels.cache.get(idCanalTexto); // Reemplaza "ID_DEL_CANAL" con el ID del canal donde deseas mostrar el tiempo restante
     if (channel) {
         let tiempoRestante = leerTiempoRestante(); // Leer el tiempo restante del archivo
-        const mensajeTiempo = await channel.send(`:trophy: **Top del ranking** :trophy: Tiempo restante para la próxima actualización: ${convertirTiempo(tiempoRestante)}`);
+        const mensajeTiempo = await channel.send(`:trophy: **Top 3 del ranking** :trophy: Tiempo restante para la próxima actualización: ${convertirTiempo(tiempoRestante)}`);
 
         const intervalo = setInterval(() => {
             tiempoRestante--;
             escribirTiempoRestante(tiempoRestante); // Guardar el tiempo restante en el archivo
 
             if (tiempoRestante > 0) {
-                mensajeTiempo.edit(`:trophy: **Top del ranking** :trophy: Tiempo restante para la próxima actualización: ${convertirTiempo(tiempoRestante)}`);
+                mensajeTiempo.edit(`:trophy: **Top 3 del ranking** :trophy: Tiempo restante para la próxima actualización: ${convertirTiempo(tiempoRestante)}`);
             } else {
                 clearInterval(intervalo);
                 escribirTiempoRestante(129600); // Reiniciar el tiempo restante a 1.5 días (en segundos)
@@ -220,7 +220,7 @@ async function generarRanking() {
         .sort(([, userDataA], [, userDataB]) => userDataB.totalAbusos - userDataA.totalAbusos)
         .slice(0, 3); // Mostrar solo los primeros 3 puestos
 
-    let message = ":trophy: **Top del ranking** :trophy: \n\n";
+    let message = ":trophy: **Top 3 del ranking** :trophy: \n\n";
     sortedRanking.forEach(([username, userData], index) => {
         const { totalAbusos, idSums } = userData;
 
