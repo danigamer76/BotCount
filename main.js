@@ -218,14 +218,14 @@ async function generarRanking() {
     // Ordenar el ranking
     const sortedRanking = Object.entries(rankings)
         .sort(([, userDataA], [, userDataB]) => userDataB.totalAbusos - userDataA.totalAbusos)
-        .slice(0, 3); // Mostrar solo los primeros 3 puestos
+        .slice(0, 10); // Mostrar solo los primeros 10 puestos
 
-    let message = ":trophy: **Top 3 del ranking** :trophy: \n\n";
+    let message = ":trophy: **Top del ranking** :trophy: \n\n";
     sortedRanking.forEach(([username, userData], index) => {
         const { totalAbusos, idSums } = userData;
 
         // Crear la tabla para el usuario
-       message += `\`\`\`
+        message += `\`\`\`
 |  ${index + 1}. ${username}: Total Abusos: ${totalAbusos}  |
 |-----------------------------------------------------------|
 `;
@@ -248,17 +248,17 @@ async function generarRanking() {
     });
 
     // Mensaje con el resto del ranking
-    //message += "**Otros usuarios:**\n\n";
     Object.entries(rankings)
         .sort(([, userDataA], [, userDataB]) => userDataB.totalAbusos - userDataA.totalAbusos)
-        .slice(3)
+        .slice(10)
         .forEach(([username, userData], index) => {
             const { totalAbusos } = userData;
-            message += `**${index + 4}. ${username}:** | -> Total Abusos: ${totalAbusos}\n`;
+            message += `**${index + 11}. ${username}:** | -> Total Abusos: ${totalAbusos}\n`;
         });
 
     return message;
 }
+
 
 
 
