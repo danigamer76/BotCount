@@ -251,10 +251,10 @@ async function generarRanking() {
     //message += "**Otros usuarios:**\n\n";
     Object.entries(rankings)
         .sort(([, userDataA], [, userDataB]) => userDataB.totalAbusos - userDataA.totalAbusos)
-        .slice(3)
+        .slice(10)
         .forEach(([username, userData], index) => {
             const { totalAbusos } = userData;
-            message += `**${index + 4}. ${username}:** | -> Total Abusos: ${totalAbusos}\n`;
+            message += `**${index + 11}. ${username}:** | -> Total Abusos: ${totalAbusos}\n`;
         });
 
     return message;
